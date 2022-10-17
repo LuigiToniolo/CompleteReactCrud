@@ -30,6 +30,8 @@ namespace WebApi
         {
             services.AddDbContext<DonationDBContext>(options => options.UseMySQL(Configuration.GetConnectionString("DevConnection")));
 
+            services.AddCors();
+
             //services.AddDbContext<DonationDBContext>(options => options.UseMySql(Configuration.GetConnectionString("DevConnection")));
             services.AddControllers();
             services.AddSwaggerGen(c =>
@@ -41,6 +43,11 @@ namespace WebApi
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
+            app.UseCors(options => options.WithOrigins("http://localhost:3000")
+            .AllowAnyHeader()
+            .AllowAnyMethod()
+            );
+
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
